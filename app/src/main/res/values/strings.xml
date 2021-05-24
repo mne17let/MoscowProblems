@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MoscowProblems</string>
+
+    <string name="string_title_hint">Введите название проблемы</string>
+    <string name="string_title_text">Название</string>
+    <string name="string_details_text">Подробности</string>
+    <string name="string_solved_text">Решена</string>
+
 </resources>
