@@ -34,7 +34,7 @@ class ProblemFragment: Fragment(){
         val viewOfFragment = inflater.inflate(R.layout.fragment_problem, container, false)
 
         editTextForTitleVar = viewOfFragment.findViewById(R.id.id_edittext_title)
-        buttonWithDataVar = viewOfFragment.findViewWithTag(R.id.id_button_with_date)
+        buttonWithDataVar = viewOfFragment.findViewById(R.id.id_button_with_date)
         checkBoxSolveProblemVar = viewOfFragment.findViewById(R.id.id_checkbox_problem_solved)
 
 
