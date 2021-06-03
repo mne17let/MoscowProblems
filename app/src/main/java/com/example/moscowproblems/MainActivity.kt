@@ -3,6 +3,7 @@ package com.example.moscowproblems
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.moscowproblems.FragmentClasses.ProblemFragment
+import com.example.moscowproblems.FragmentClasses.ProblemsListFragment
 import com.example.moscowproblems.Models.ProblemModel
 
 class MainActivity : AppCompatActivity() {
@@ -17,9 +18,9 @@ class MainActivity : AppCompatActivity() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.id_frame_container)
 
         if (currentFragment == null){
-            val fragmentProblem = ProblemFragment()
+            val fragmentProblemList = ProblemsListFragment()
             supportFragmentManager.beginTransaction()
-                    .add(R.id.id_frame_container, fragmentProblem)
+                    .add(R.id.id_frame_container, fragmentProblemList)
                     .commit()
         }
     }
