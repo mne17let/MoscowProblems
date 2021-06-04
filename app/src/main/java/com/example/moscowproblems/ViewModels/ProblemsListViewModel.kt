@@ -20,6 +20,12 @@ class ProblemsListViewModel : ViewModel(){
                 false
             }
 
+            newProblem.haveButton = if((0..2).random() == 1){
+                "No"
+            } else{
+                "Yes"
+            }
+
             problemsList.add(newProblem)
         }
     }
