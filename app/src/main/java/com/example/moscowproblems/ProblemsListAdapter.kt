@@ -2,6 +2,7 @@ package com.example.moscowproblems
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moscowproblems.Models.ProblemModel
 import com.example.moscowproblems.RecyclerViewProblemsListFragment.ProblemHolder
@@ -19,10 +20,7 @@ class ProblemsListAdapter(var problemsList: List<ProblemModel>) : RecyclerView.A
     override fun onBindViewHolder(holder: ProblemHolder, position: Int) {
         val currentProblemInList = problemsList[position]
 
-        holder.apply {
-            titleTextView.text = currentProblemInList.title
-            dateTextView.text = currentProblemInList.date.toString()
-        }
+        holder.bind(currentProblemInList)
     }
 
     override fun getItemCount(): Int {

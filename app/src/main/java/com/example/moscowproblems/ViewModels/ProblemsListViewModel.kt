@@ -12,7 +12,7 @@ class ProblemsListViewModel : ViewModel(){
         for (i in 1..100){
             val newProblem = ProblemModel()
 
-            newProblem.title = "#Problem $i"
+            newProblem.title = "Problem #$i"
 
             newProblem.isSolved = if (i % 2 == 0){
                 true
