@@ -1,6 +1,7 @@
 package com.example.moscowproblems.RecyclerViewProblemsListFragment
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ class ProblemHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickList
 
     private var titleTextView: TextView = view.findViewById(R.id.id_item_title_problems_list)
     private var dateTextView: TextView = view.findViewById(R.id.id_item_date_problems_list)
+    private var problemSolvedImage = view.findViewById<ImageView>(R.id.id_item_image_solved_problems_list)
 
     init {
         view.setOnClickListener(this)
@@ -18,7 +20,15 @@ class ProblemHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickList
 
     fun bind(problemData: ProblemModel){
         titleTextView.text = problemData.title
-        dateTextView.text = problemData.date.toString()
+
+        val dateFormat = android.text.format.DateFormat.format("HH:mm:ss EEEE, d MMMM, yyy", problemData.date)
+
+        dateTextView.text = dateFormat.toString()
+        if (!problemData.isSolved){
+            problemSolvedImage.visibility = View.INVISIBLE
+        } else {
+            problemSolvedImage.visibility = View.VISIBLE
+        }
     }
 
     override fun onClick(v: View?) {

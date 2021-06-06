@@ -1,11 +1,15 @@
 package com.example.moscowproblems.ViewModels
 
 import androidx.lifecycle.ViewModel
+import com.example.moscowproblems.Models.AdvertisementModel
 import com.example.moscowproblems.Models.ProblemModel
+import com.example.moscowproblems.R
 
 class ProblemsListViewModel : ViewModel(){
 
     val problemsList = mutableListOf<ProblemModel>()
+    val advertismentList = mutableListOf<AdvertisementModel>()
+    val fullListForRecycler = mutableListOf<Any>()
 
 
     init {
@@ -20,13 +24,34 @@ class ProblemsListViewModel : ViewModel(){
                 false
             }
 
-            newProblem.haveButton = if((0..2).random() == 1){
-                "No"
-            } else{
-                "Yes"
+            problemsList.add(newProblem)
+        }
+
+        for (i in 1..25){
+            val newAd = AdvertisementModel()
+
+            newAd.title = "Реклама № $i"
+
+            newAd.idAdImage = when ((1..3).random()){
+                1 -> R.drawable.ad_image_1
+                2 -> R.drawable.ad_image_2
+                3 -> R.drawable.ad_image_3
+                else -> R.drawable.ad_image_1
             }
 
-            problemsList.add(newProblem)
+            advertismentList.add(newAd)
+        }
+
+        var problemNumber = 0
+        var adNumber = 0
+        for (i in 1..problemsList.size + advertismentList.size){
+            if (i % 5 == 0){
+                fullListForRecycler.add(advertismentList[adNumber])
+                adNumber = adNumber + 1
+            } else {
+                fullListForRecycler.add(problemsList[problemNumber])
+                problemNumber += 1
+            }
         }
     }
 
