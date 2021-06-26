@@ -1,6 +1,7 @@
 package com.example.moscowproblems.ViewModels
 
 import androidx.lifecycle.ViewModel
+import com.example.moscowproblems.DatabaseClasses.ProblemsRepository
 import com.example.moscowproblems.Models.AdvertisementModel
 import com.example.moscowproblems.Models.ProblemModel
 import com.example.moscowproblems.R
@@ -9,10 +10,16 @@ class ProblemsListViewModel : ViewModel(){
 
     val problemsList = mutableListOf<ProblemModel>()
     val advertismentList = mutableListOf<AdvertisementModel>()
-    val fullListForRecycler = mutableListOf<Any>()
+
+    val problemsRepository : ProblemsRepository = ProblemsRepository.getInstance()
+    val fullListForRecyclerLiveData = problemsRepository.getAllProblems()
+
+    //val fullListForRecycler = mutableListOf<Any>()
 
 
-    init {
+
+
+/*    init {
         for (i in 1..100){
             val newProblem = ProblemModel()
 
@@ -53,6 +60,6 @@ class ProblemsListViewModel : ViewModel(){
                 problemNumber += 1
             }
         }
-    }
+    }*/
 
 }
