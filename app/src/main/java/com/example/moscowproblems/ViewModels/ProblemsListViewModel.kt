@@ -17,6 +17,22 @@ class ProblemsListViewModel : ViewModel(){
     //val fullListForRecycler = mutableListOf<Any>()
 
 
+    init{
+        for (i in 1..100){
+            val newProblem = ProblemModel()
+
+            newProblem.title = "Problem #$i"
+
+            newProblem.isSolved = if (i % 2 == 0){
+                true
+            } else {
+                false
+            }
+
+            problemsRepository.addNewProblem(newProblem)
+        }
+    }
+
 
 
 /*    init {

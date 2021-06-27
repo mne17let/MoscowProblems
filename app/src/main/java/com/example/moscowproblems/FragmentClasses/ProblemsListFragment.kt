@@ -34,6 +34,8 @@ class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
 
     fun createAndSetAdapter(allProblems: List<ProblemModel>){
         //val fullListForRecycler = viewModelForProblemsList.fullListForRecycler
+
+
         adapterForProblemsListRecyclerView = ProblemsListAdapter(allProblems)
         recyclerViewWithProblemsList.adapter = adapterForProblemsListRecyclerView
     }

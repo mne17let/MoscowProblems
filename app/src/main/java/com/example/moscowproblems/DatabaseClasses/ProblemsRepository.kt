@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.example.moscowproblems.Models.ProblemModel
 import java.lang.IllegalStateException
 import java.util.*
+import java.util.concurrent.Executors
 
 class ProblemsRepository private constructor(context: Context) {
 
@@ -16,6 +17,8 @@ class ProblemsRepository private constructor(context: Context) {
             .build()
 
     private var problemDao = dataBaseWithProblems.getDao()
+
+    private var executorObject = Executors.newSingleThreadExecutor()
 
     companion object{
         private var INSTANCE: ProblemsRepository? = null
@@ -34,4 +37,11 @@ class ProblemsRepository private constructor(context: Context) {
     fun getAllProblems(): LiveData<List<ProblemModel>> = problemDao.getAllProblems()
 
     fun getProblemById(id: UUID): LiveData<ProblemModel> = problemDao.getProblem(id)
+
+    fun addNewProblem(newProblemModel: ProblemModel){
+        executorObject.execute{
+            problemDao.addNewProblem(newProblemModel)
+        }
+    }
+
 }
