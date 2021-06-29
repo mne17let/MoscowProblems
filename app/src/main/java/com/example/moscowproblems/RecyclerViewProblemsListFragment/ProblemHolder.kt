@@ -1,18 +1,25 @@
 package com.example.moscowproblems.RecyclerViewProblemsListFragment
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moscowproblems.CallBacks.CallbackForViewHolder
 import com.example.moscowproblems.Models.ProblemModel
 import com.example.moscowproblems.R
+import java.util.*
 
 class ProblemHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener {
 
     private var titleTextView: TextView = view.findViewById(R.id.id_item_title_problems_list)
     private var dateTextView: TextView = view.findViewById(R.id.id_item_date_problems_list)
     private var problemSolvedImage = view.findViewById<ImageView>(R.id.id_item_image_solved_problems_list)
+
+    lateinit var callbackForViewHolder: CallbackForViewHolder
+
+    private lateinit var currentDataID: UUID
 
     init {
         view.setOnClickListener(this)
@@ -29,12 +36,12 @@ class ProblemHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickList
         } else {
             problemSolvedImage.visibility = View.VISIBLE
         }
+
+        currentDataID = problemData.id
     }
 
     override fun onClick(v: View?) {
-        if (v != null) {
-            Toast.makeText(v.context, "Пррблема ${titleTextView.text} нажата", Toast.LENGTH_SHORT).show()
-        }
+        callbackForViewHolder.onClickOnViewHolder(currentDataID)
     }
 
 }

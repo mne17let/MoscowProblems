@@ -3,11 +3,15 @@ package com.example.moscowproblems.RecyclerViewProblemsListFragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moscowproblems.CallBacks.CallbackForViewHolder
 import com.example.moscowproblems.Models.AdvertisementModel
 import com.example.moscowproblems.Models.ProblemModel
 import com.example.moscowproblems.R
+import java.util.*
 
 class ProblemsListAdapter(var fullModelList: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    lateinit var myCallBackForHolder: CallbackForViewHolder
 
     override fun getItemViewType(position: Int): Int {
         return when (fullModelList[position]){
@@ -16,6 +20,8 @@ class ProblemsListAdapter(var fullModelList: List<Any>) : RecyclerView.Adapter<R
             else -> R.layout.item_problems_list
         }
     }
+
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -34,6 +40,7 @@ class ProblemsListAdapter(var fullModelList: List<Any>) : RecyclerView.Adapter<R
         val currentModelInList = fullModelList[position]
         if (holder is ProblemHolder){
             holder.bind(currentModelInList as ProblemModel)
+            holder.callbackForViewHolder = myCallBackForHolder
         } else if (holder is AdvertisementHolder){
             holder.bind(currentModelInList as AdvertisementModel)
         }

@@ -1,21 +1,28 @@
 package com.example.moscowproblems.FragmentClasses
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moscowproblems.CallBacks.CallbackForActivity
+import com.example.moscowproblems.CallBacks.CallbackForViewHolder
 import com.example.moscowproblems.Models.ProblemModel
 import com.example.moscowproblems.RecyclerViewProblemsListFragment.ProblemsListAdapter
 import com.example.moscowproblems.R
 import com.example.moscowproblems.ViewModels.ProblemsListViewModel
+import java.util.*
 
-class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
+class ProblemsListFragment : Fragment(R.layout.fragment_list_problems), CallbackForViewHolder{
 
     private lateinit var recyclerViewWithProblemsList: RecyclerView
     private lateinit var adapterForProblemsListRecyclerView: ProblemsListAdapter
+
+    private var myCallbackForActivity: CallbackForActivity? = null
 
     private val viewModelForProblemsList by lazy{
         ViewModelProvider(this).get(ProblemsListViewModel::class.java)
@@ -37,6 +44,7 @@ class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
 
 
         adapterForProblemsListRecyclerView = ProblemsListAdapter(allProblems)
+        adapterForProblemsListRecyclerView.myCallBackForHolder = this
         recyclerViewWithProblemsList.adapter = adapterForProblemsListRecyclerView
     }
 
@@ -48,7 +56,7 @@ class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
     fun setObserverForProblemList(){
         val viewLifecycleOwnerVariable = viewLifecycleOwner
         val observerObject = MyObserver()
-        viewModelForProblemsList.fullListForRecyclerLiveData.observe(viewLifecycleOwnerVariable,observerObject)
+        viewModelForProblemsList.fullListForRecyclerLiveData.observe(viewLifecycleOwnerVariable, observerObject)
     }
 
     inner class MyObserver: Observer<List<ProblemModel>>{
@@ -56,5 +64,19 @@ class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
             createAndSetAdapter(getListWithProblems)
         }
 
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        myCallbackForActivity = activity as CallbackForActivity
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        myCallbackForActivity = null
+    }
+
+    override fun onClickOnViewHolder(id: UUID) {
+        myCallbackForActivity?.onProblemInListClick(id)
     }
 }
