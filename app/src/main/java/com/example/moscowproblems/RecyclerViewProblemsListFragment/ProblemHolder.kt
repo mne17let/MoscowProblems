@@ -1,12 +1,10 @@
 package com.example.moscowproblems.RecyclerViewProblemsListFragment
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moscowproblems.CallBacks.CallbackForViewHolder
+import com.example.moscowproblems.CallBacks.CallbackForActivity
 import com.example.moscowproblems.Models.ProblemModel
 import com.example.moscowproblems.R
 import java.util.*
@@ -17,7 +15,7 @@ class ProblemHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickList
     private var dateTextView: TextView = view.findViewById(R.id.id_item_date_problems_list)
     private var problemSolvedImage = view.findViewById<ImageView>(R.id.id_item_image_solved_problems_list)
 
-    lateinit var callbackForViewHolder: CallbackForViewHolder
+    var callbackForViewHolder: CallbackForActivity? = null
 
     private lateinit var currentDataID: UUID
 
@@ -41,7 +39,7 @@ class ProblemHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickList
     }
 
     override fun onClick(v: View?) {
-        callbackForViewHolder.onClickOnViewHolder(currentDataID)
+        callbackForViewHolder?.onProblemInListClick(currentDataID)
     }
 
 }

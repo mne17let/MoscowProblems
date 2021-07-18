@@ -2,16 +2,19 @@ package com.example.moscowproblems.RecyclerViewProblemsListFragment
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moscowproblems.CallBacks.CallbackForViewHolder
+import com.example.moscowproblems.CallBacks.CallbackForActivity
+import com.example.moscowproblems.FragmentClasses.ProblemsListFragment
 import com.example.moscowproblems.Models.AdvertisementModel
 import com.example.moscowproblems.Models.ProblemModel
 import com.example.moscowproblems.R
-import java.util.*
 
-class ProblemsListAdapter(var fullModelList: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProblemsListAdapter(var fullModelList: List<Any>,
+                          var myInterfaceForListAdapter: ProblemsListFragment.MyInterfaceForListAdapter)
+    : ListAdapter<ProblemModel, ProblemHolder>(myInterfaceForListAdapter) {
 
-    lateinit var myCallBackForHolder: CallbackForViewHolder
+    var myCallBackForHolder: CallbackForActivity? = null
 
     override fun getItemViewType(position: Int): Int {
         return when (fullModelList[position]){
@@ -23,7 +26,7 @@ class ProblemsListAdapter(var fullModelList: List<Any>) : RecyclerView.Adapter<R
 
 
 
-    override fun onCreateViewHolder(
+    /*override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): RecyclerView.ViewHolder {
@@ -34,9 +37,9 @@ class ProblemsListAdapter(var fullModelList: List<Any>) : RecyclerView.Adapter<R
             else -> ProblemHolder(viewForHolder)
         }
         return problemHolderInstance
-    }
+    }*/
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    /*override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentModelInList = fullModelList[position]
         if (holder is ProblemHolder){
             holder.bind(currentModelInList as ProblemModel)
@@ -44,9 +47,21 @@ class ProblemsListAdapter(var fullModelList: List<Any>) : RecyclerView.Adapter<R
         } else if (holder is AdvertisementHolder){
             holder.bind(currentModelInList as AdvertisementModel)
         }
-    }
+    }*/
 
     override fun getItemCount(): Int {
         return fullModelList.size
+    }
+
+    override fun onBindViewHolder(holder: ProblemHolder, position: Int) {
+        val currentModelInList = fullModelList[position]
+        holder.bind(currentModelInList as ProblemModel)
+        holder.callbackForViewHolder = myCallBackForHolder
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProblemHolder {
+        val viewForHolder = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
+        val problemHolderInstance = ProblemHolder(viewForHolder)
+        return problemHolderInstance
     }
 }

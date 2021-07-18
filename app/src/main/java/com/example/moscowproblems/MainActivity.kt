@@ -30,6 +30,16 @@ class MainActivity : AppCompatActivity(), CallbackForActivity {
     }
 
     override fun onProblemInListClick(id: UUID) {
-        Toast.makeText(this, "Нажат элемент с id $id", Toast.LENGTH_SHORT).show()
+        val newFragment = ProblemFragment()
+
+        val argsForFragment: Bundle = Bundle()
+        argsForFragment.putSerializable("Problem_id", id)
+        newFragment.arguments = argsForFragment
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.id_frame_container, newFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

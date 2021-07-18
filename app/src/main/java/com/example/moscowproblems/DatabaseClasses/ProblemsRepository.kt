@@ -44,4 +44,10 @@ class ProblemsRepository private constructor(context: Context) {
         }
     }
 
+    fun updateProblemInBase(updateProblemModel: ProblemModel){
+        executorObject.execute{
+            problemDao.updateProblem(updateProblemModel)
+        }
+    }
+
 }
