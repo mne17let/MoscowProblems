@@ -10,21 +10,25 @@ import com.example.moscowproblems.Models.AdvertisementModel
 import com.example.moscowproblems.Models.ProblemModel
 import com.example.moscowproblems.R
 
-class ProblemsListAdapter(var fullModelList: List<Any>,
-                          var myInterfaceForListAdapter: ProblemsListFragment.MyInterfaceForListAdapter)
+class ProblemsListAdapter(myInterfaceForListAdapter: ProblemsListFragment.MyInterfaceForListAdapter)
     : ListAdapter<ProblemModel, ProblemHolder>(myInterfaceForListAdapter) {
 
     var myCallBackForHolder: CallbackForActivity? = null
+    //private lateinit var fullModelList: List<Any>
 
-    override fun getItemViewType(position: Int): Int {
+
+    /*override fun getItemViewType(position: Int): Int {
         return when (fullModelList[position]){
             is ProblemModel -> R.layout.item_problems_list
             is AdvertisementModel -> R.layout.item_advertisement_list
             else -> R.layout.item_problems_list
         }
-    }
+    }*/
 
 
+    /*fun setList(list: List<Any>){
+        fullModelList = list
+    }*/
 
     /*override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -49,12 +53,13 @@ class ProblemsListAdapter(var fullModelList: List<Any>,
         }
     }*/
 
-    override fun getItemCount(): Int {
+    /*override fun getItemCount(): Int {
         return fullModelList.size
-    }
+    }*/
 
     override fun onBindViewHolder(holder: ProblemHolder, position: Int) {
-        val currentModelInList = fullModelList[position]
+        //val currentModelInList = fullModelList[position]
+        val currentModelInList = getItem(position)
         holder.bind(currentModelInList as ProblemModel)
         holder.callbackForViewHolder = myCallBackForHolder
     }
@@ -63,5 +68,9 @@ class ProblemsListAdapter(var fullModelList: List<Any>,
         val viewForHolder = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
         val problemHolderInstance = ProblemHolder(viewForHolder)
         return problemHolderInstance
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return R.layout.item_problems_list
     }
 }

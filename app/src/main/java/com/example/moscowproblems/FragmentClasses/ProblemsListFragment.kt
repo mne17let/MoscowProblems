@@ -28,7 +28,7 @@ class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         createAndSetManagerForRecycler(view)
-        createAndSetEmptyAdapter()
+        createAndSetAdapter()
         setObserverForProblemList()
     }
 
@@ -37,17 +37,17 @@ class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
         recyclerViewWithProblemsList.layoutManager = LinearLayoutManager(context)
     }
 
-    fun createAndSetAdapter(allProblems: List<ProblemModel>){
+    fun createAndSetAdapter(){
         //val fullListForRecycler = viewModelForProblemsList.fullListForRecycler
 
-        adapterForProblemsListRecyclerView = ProblemsListAdapter(allProblems, MyInterfaceForListAdapter())
+        adapterForProblemsListRecyclerView = ProblemsListAdapter(MyInterfaceForListAdapter())
         adapterForProblemsListRecyclerView.myCallBackForHolder = myCallbackForActivityForCLickOnProblemInList
         recyclerViewWithProblemsList.adapter = adapterForProblemsListRecyclerView
     }
 
     fun createAndSetEmptyAdapter(){
-        val emptyAdapter = ProblemsListAdapter(emptyList(), MyInterfaceForListAdapter())
-        recyclerViewWithProblemsList.adapter = emptyAdapter
+        //val emptyAdapter = ProblemsListAdapter(MyInterfaceForListAdapter())
+        //recyclerViewWithProblemsList.adapter = emptyAdapter
     }
 
     fun setObserverForProblemList(){
@@ -58,7 +58,8 @@ class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
 
     inner class MyObserver: Observer<List<ProblemModel>>{
         override fun onChanged(getListWithProblems: List<ProblemModel>) {
-            createAndSetAdapter(getListWithProblems)
+            adapterForProblemsListRecyclerView.submitList(getListWithProblems)
+            //createAndSetAdapter(getListWithProblems)
         }
     }
 
