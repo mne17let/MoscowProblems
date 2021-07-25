@@ -18,6 +18,8 @@ import com.example.moscowproblems.R
 import com.example.moscowproblems.ViewModels.ProblemFragmentViewModel
 import java.util.*
 
+private const val STRING_TAG_FOR_DATE_DIALOG = "Date dialog"
+
 class ProblemFragment: Fragment(){
 
     private lateinit var problemData: ProblemModel
@@ -77,16 +79,7 @@ class ProblemFragment: Fragment(){
         buttonWithDataVar.text = problemData.date.toString()
         checkBoxSolveProblemVar.isChecked = problemData.isSolved
         checkBoxSolveProblemVar.jumpDrawablesToCurrentState()
-
     }
-
-    fun workWithButton(){
-        buttonWithDataVar.apply {
-            text = problemData.date.toString()
-            isEnabled = false
-        }
-    }
-
 
 
     override fun onStart() {
@@ -94,9 +87,26 @@ class ProblemFragment: Fragment(){
 
         setTextWatchetOnEditText()
         setListenerOnCheckBox()
+        workWithDateButton()
 
     }
 
+    fun workWithDateButton(){
+        buttonWithDataVar.apply {
+            setOnClickListener(object : View.OnClickListener{
+                override fun onClick(v: View?) {
+                    val argsForDatePickerFragment = Bundle()
+                    argsForDatePickerFragment.putSerializable("Дата текущей проблемы", problemData.date)
+
+                    val newDatePickerFragment = DatePickerFragment()
+                    newDatePickerFragment.arguments = argsForDatePickerFragment
+                    newDatePickerFragment.show(this@ProblemFragment.parentFragmentManager, STRING_TAG_FOR_DATE_DIALOG)
+                }
+            })
+
+        }
+    }
+//this@ProblemFragment
     fun setTextWatchetOnEditText(){
         val editTextTitleWatcher: TextWatcher = object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

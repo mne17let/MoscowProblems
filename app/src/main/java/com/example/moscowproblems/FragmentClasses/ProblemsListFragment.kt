@@ -57,8 +57,8 @@ class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
     }
 
     inner class MyObserver: Observer<List<ProblemModel>>{
-        override fun onChanged(getListWithProblems: List<ProblemModel>) {
-            adapterForProblemsListRecyclerView.submitList(getListWithProblems)
+        override fun onChanged(updatedListWithProblems: List<ProblemModel>) {
+            adapterForProblemsListRecyclerView.submitList(updatedListWithProblems)
             //createAndSetAdapter(getListWithProblems)
         }
     }
