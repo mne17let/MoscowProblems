@@ -11,6 +11,7 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.moscowproblems.Models.ProblemModel
@@ -19,6 +20,8 @@ import com.example.moscowproblems.ViewModels.ProblemFragmentViewModel
 import java.util.*
 
 private const val STRING_TAG_FOR_DATE_DIALOG = "Date dialog"
+private const val STRING_FOR_KEY_FOR_TARGET_FRAGMENT = "key"
+private const val STRING_FOR_KEY_FOR_BUNDLE_FROM_DATEPICKER_FRAGMENT = "key for bundle"
 
 class ProblemFragment: Fragment(){
 
@@ -39,6 +42,16 @@ class ProblemFragment: Fragment(){
 
         problemId = arguments?.getSerializable("Problem_id") as UUID
         viewModelForProblemFragment.loadProblem(problemId)
+
+        childFragmentManager.setFragmentResultListener(STRING_FOR_KEY_FOR_TARGET_FRAGMENT, this, object :
+            FragmentResultListener {
+            override fun onFragmentResult(requestKey: String, result: Bundle) {
+                val newDateForProblem = result.getSerializable(STRING_FOR_KEY_FOR_BUNDLE_FROM_DATEPICKER_FRAGMENT)
+                problemData.date = newDateForProblem as Date
+                updateUI()
+            }
+
+        })
     }
 
 
@@ -100,7 +113,7 @@ class ProblemFragment: Fragment(){
 
                     val newDatePickerFragment = DatePickerFragment()
                     newDatePickerFragment.arguments = argsForDatePickerFragment
-                    newDatePickerFragment.show(this@ProblemFragment.parentFragmentManager, STRING_TAG_FOR_DATE_DIALOG)
+                    newDatePickerFragment.show(this@ProblemFragment.childFragmentManager, STRING_TAG_FOR_DATE_DIALOG)
                 }
             })
 
