@@ -39,4 +39,10 @@
         android:layout_height="wrap_content"
         android:text="@string/string_solved_text" />
 
+    <Button
+        android:id="@+id/id_button_pick_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Выбрать время" />
+
 </LinearLayout>

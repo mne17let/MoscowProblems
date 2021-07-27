@@ -3,6 +3,7 @@ package com.example.moscowproblems.FragmentClasses
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +21,15 @@ import com.example.moscowproblems.ViewModels.ProblemFragmentViewModel
 import java.util.*
 
 private const val STRING_TAG_FOR_DATE_DIALOG = "Date dialog"
+private const val STRING_TAG_FOR_TIME_DIALOG = "Time dialog"
 private const val STRING_FOR_KEY_FOR_TARGET_FRAGMENT = "key"
+private const val STRING_FOR_KEY_FOR_TARGET_TIME_FRAGMENT = "key time"
 private const val STRING_FOR_KEY_FOR_BUNDLE_FROM_DATEPICKER_FRAGMENT = "key for bundle"
+
+private const val STRING_FOR_KEY_FOR_BUNDLE_FOR_TARGET_FRAGMENT_HOUR = "key for bundle with hour"
+private const val STRING_FOR_KEY_FOR_BUNDLE_FOR_TARGET_FRAGMENT_MINUTE = "key for bundle with minutes"
+
+private const val TAG_FOR_TIME_DEBUG = "TimeDebug"
 
 class ProblemFragment: Fragment(){
 
@@ -30,6 +38,7 @@ class ProblemFragment: Fragment(){
     private lateinit var editTextForTitleVar: EditText
     private lateinit var buttonWithDataVar: Button
     private lateinit var checkBoxSolveProblemVar: CheckBox
+    private lateinit var buttonPickTimeVar: Button
 
     private lateinit var problemId: UUID
 
@@ -52,6 +61,22 @@ class ProblemFragment: Fragment(){
             }
 
         })
+
+
+        childFragmentManager.setFragmentResultListener("мой ключ времени", this, object :
+            FragmentResultListener {
+            override fun onFragmentResult(requestKey: String, result: Bundle) {
+
+                val newHour = result.getInt(STRING_FOR_KEY_FOR_BUNDLE_FOR_TARGET_FRAGMENT_HOUR)
+                val newMinute = result.getInt(STRING_FOR_KEY_FOR_BUNDLE_FOR_TARGET_FRAGMENT_MINUTE)
+
+                Log.d(TAG_FOR_TIME_DEBUG, "Get data from bundle" +
+                        "current time is $newHour:$newMinute")
+
+                updateTimeOnButton(newHour, newMinute)
+            }
+
+        })
     }
 
 
@@ -62,7 +87,7 @@ class ProblemFragment: Fragment(){
         editTextForTitleVar = viewOfFragment.findViewById(R.id.id_edittext_title)
         buttonWithDataVar = viewOfFragment.findViewById(R.id.id_button_with_date)
         checkBoxSolveProblemVar = viewOfFragment.findViewById(R.id.id_checkbox_problem_solved)
-
+        buttonPickTimeVar = viewOfFragment.findViewById(R.id.id_button_pick_time)
 
         return viewOfFragment
     }
@@ -101,25 +126,33 @@ class ProblemFragment: Fragment(){
         setTextWatchetOnEditText()
         setListenerOnCheckBox()
         workWithDateButton()
+        setListenerOnPickTimeButton()
 
     }
 
     fun workWithDateButton(){
-        buttonWithDataVar.apply {
-            setOnClickListener(object : View.OnClickListener{
-                override fun onClick(v: View?) {
-                    val argsForDatePickerFragment = Bundle()
-                    argsForDatePickerFragment.putSerializable("Дата текущей проблемы", problemData.date)
+        buttonWithDataVar.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                val argsForDatePickerFragment = Bundle()
+                argsForDatePickerFragment.putSerializable("Дата текущей проблемы", problemData.date)
 
-                    val newDatePickerFragment = DatePickerFragment()
-                    newDatePickerFragment.arguments = argsForDatePickerFragment
-                    newDatePickerFragment.show(this@ProblemFragment.childFragmentManager, STRING_TAG_FOR_DATE_DIALOG)
-                }
-            })
-
-        }
+                val newDatePickerFragment = DatePickerFragment()
+                newDatePickerFragment.arguments = argsForDatePickerFragment
+                newDatePickerFragment.show(this@ProblemFragment.childFragmentManager, STRING_TAG_FOR_DATE_DIALOG)
+            }
+        })
     }
-//this@ProblemFragment
+
+    fun setListenerOnPickTimeButton(){
+       buttonPickTimeVar.setOnClickListener(object : View.OnClickListener{
+           override fun onClick(v: View?) {
+               val newTimePickerDialogFragment = TimePickerFragment()
+               newTimePickerDialogFragment.show(this@ProblemFragment.childFragmentManager, STRING_TAG_FOR_TIME_DIALOG)
+           }
+
+       })
+    }
+
     fun setTextWatchetOnEditText(){
         val editTextTitleWatcher: TextWatcher = object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -151,5 +184,8 @@ class ProblemFragment: Fragment(){
         checkBoxSolveProblemVar.setOnCheckedChangeListener(listenerForCheckBox)
     }
 
-
+    fun updateTimeOnButton(hour: Int, minute: Int){
+        val newTextForButton = "Текущее время $hour:$minute"
+        buttonPickTimeVar.text = newTextForButton
+    }
 }
