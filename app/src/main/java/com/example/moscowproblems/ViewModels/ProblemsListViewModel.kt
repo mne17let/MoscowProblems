@@ -17,7 +17,7 @@ class ProblemsListViewModel : ViewModel(){
     //val fullListForRecycler = mutableListOf<Any>()
 
 
-    init{
+    /*init{
         for (i in 1..100){
             val newProblem = ProblemModel()
 
@@ -31,8 +31,12 @@ class ProblemsListViewModel : ViewModel(){
 
             problemsRepository.addNewProblem(newProblem)
         }
-    }
+    }*/
 
+
+    fun addNewProblem(newProblem: ProblemModel){
+        problemsRepository.addNewProblem(newProblem)
+    }
 
 
 /*    init {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="@string/string_new_problem_text"
+        android:id="@+id/id_menu_problem_fragment_new_problem"
+        android:icon="@drawable/ic_menu_problem_list_fragment_add_new_problem"
+        app:showAsAction="ifRoom|withText"/>
+</menu>

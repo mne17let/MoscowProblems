@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.CompoundButton
@@ -48,6 +46,8 @@ class ProblemFragment: Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         problemId = arguments?.getSerializable("Problem_id") as UUID
         viewModelForProblemFragment.loadProblem(problemId)
@@ -129,6 +129,8 @@ class ProblemFragment: Fragment(){
         setListenerOnPickTimeButton()
 
     }
+
+
 
     fun workWithDateButton(){
         buttonWithDataVar.setOnClickListener(object : View.OnClickListener{

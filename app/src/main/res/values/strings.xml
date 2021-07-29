@@ -6,4 +6,9 @@
     <string name="string_details_text">Подробности</string>
     <string name="string_solved_text">Решена</string>
 
+
+    <string name="string_new_problem_text">Новая проблема</string>
+    <string name="string_when_empty_list_with_problems">Нет проблем! Круто! Но если они появились, то добавьте их в список</string>
+    <string name="string_button_when_empty_list_with_problems">Добавить новую проблему</string>
+
 </resources>
