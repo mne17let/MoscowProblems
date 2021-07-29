@@ -80,7 +80,7 @@ class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
             buttonWhenListWithProblemsIsEmpty.visibility = View.VISIBLE
             textViewWhenListWithProblemsIsEmpty.visibility = View.VISIBLE
 
-            textViewWhenListWithProblemsIsEmpty.text = isEmptyList.toString()
+            //textViewWhenListWithProblemsIsEmpty.text = isEmptyList.toString()
 
             buttonWhenListWithProblemsIsEmpty.setOnClickListener{
                 addNewProblem()
@@ -91,7 +91,7 @@ class ProblemsListFragment : Fragment(R.layout.fragment_list_problems){
             buttonWhenListWithProblemsIsEmpty.visibility = View.GONE
             textViewWhenListWithProblemsIsEmpty.visibility = View.GONE
 
-            textViewWhenListWithProblemsIsEmpty.text = isEmptyList.toString()
+            //textViewWhenListWithProblemsIsEmpty.text = isEmptyList.toString()
 
             recyclerViewWithProblemsList.visibility = View.VISIBLE
         }
