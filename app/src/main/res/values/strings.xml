@@ -11,4 +11,18 @@
     <string name="string_when_empty_list_with_problems">Нет проблем! Круто! Но если они появились, то добавьте их в список</string>
     <string name="string_button_when_empty_list_with_problems">Добавить новую проблему</string>
 
+    <string name="string_button_choose_executor">Выбрать исполнителя</string>
+    <string name="string_button_send_report">Отправить отчёт</string>
+
+    <string name="string_full_report">%1$s!
+      Данная проблема была зарегистрирована %2$s. %3$s и %4$s    </string>
+
+    <string name="string_problem_report_solved">Проблема решена</string>
+    <string name="string_problem_report_unsolved">Проблема не решена</string>
+    <string name="string_problem_report_no_executor">исполнитель не назначен.</string>
+    <string name="string_problem_report_have_executor">исполнитель - %s.</string>
+    <string name="string_problem_report_app_name">Название приложение и отчёт</string>
+    <string name="string_send_report_for">Отправить отчёт кому</string>
+
+
 </resources>

@@ -1,5 +1,7 @@
 package com.example.moscowproblems.FragmentClasses
 
+import android.app.Notification
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -29,6 +31,8 @@ private const val STRING_FOR_KEY_FOR_BUNDLE_FOR_TARGET_FRAGMENT_MINUTE = "key fo
 
 private const val TAG_FOR_TIME_DEBUG = "TimeDebug"
 
+private const val DATE_FORMAT = "EEE, MMM, dd"
+
 class ProblemFragment: Fragment(){
 
     private lateinit var problemData: ProblemModel
@@ -37,6 +41,8 @@ class ProblemFragment: Fragment(){
     private lateinit var buttonWithDataVar: Button
     private lateinit var checkBoxSolveProblemVar: CheckBox
     private lateinit var buttonPickTimeVar: Button
+    private lateinit var buttonChooseExecutorVar: Button
+    private lateinit var buttonSendReportVar: Button
 
     private lateinit var problemId: UUID
 
@@ -88,6 +94,9 @@ class ProblemFragment: Fragment(){
         buttonWithDataVar = viewOfFragment.findViewById(R.id.id_button_with_date)
         checkBoxSolveProblemVar = viewOfFragment.findViewById(R.id.id_checkbox_problem_solved)
         buttonPickTimeVar = viewOfFragment.findViewById(R.id.id_button_pick_time)
+        buttonChooseExecutorVar = viewOfFragment.findViewById(R.id.id_button_choose_executor)
+        buttonSendReportVar = viewOfFragment.findViewById(R.id.id_button_send_report)
+
 
         return viewOfFragment
     }
@@ -127,10 +136,25 @@ class ProblemFragment: Fragment(){
         setListenerOnCheckBox()
         workWithDateButton()
         setListenerOnPickTimeButton()
+        setListenerOnSendReportButton()
 
     }
 
+    fun setListenerOnSendReportButton(){
+        buttonSendReportVar.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                val newIntent = Intent(Intent.ACTION_SEND)
+                newIntent.type = "text/plain"
+                newIntent.putExtra(Intent.EXTRA_TEXT, getStringProblemReport())
+                newIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.string_problem_report_app_name)
 
+                val intentWithChooseList = Intent.createChooser(newIntent, getString(R.string.string_send_report_for))
+
+                startActivity(intentWithChooseList)
+            }
+
+        })
+    }
 
     fun workWithDateButton(){
         buttonWithDataVar.setOnClickListener(object : View.OnClickListener{
@@ -189,5 +213,25 @@ class ProblemFragment: Fragment(){
     fun updateTimeOnButton(hour: Int, minute: Int){
         val newTextForButton = "Текущее время $hour:$minute"
         buttonPickTimeVar.text = newTextForButton
+    }
+
+    fun getStringProblemReport(): String {
+        val isSolvedProblem = if (problemData.isSolved){
+            getString(R.string.string_problem_report_solved)
+        } else {
+            getString(R.string.string_problem_report_unsolved)
+        }
+
+        val dateString = android.text.format.DateFormat.format(DATE_FORMAT, problemData.date).toString()
+
+        val forExecutor = if (problemData.executor.isBlank()){
+            getString(R.string.string_problem_report_no_executor)
+        } else {
+            getString(R.string.string_problem_report_have_executor, problemData.executor)
+        }
+
+        val report = getString(R.string.string_full_report, problemData.title, dateString, isSolvedProblem, forExecutor)
+
+        return report
     }
 }

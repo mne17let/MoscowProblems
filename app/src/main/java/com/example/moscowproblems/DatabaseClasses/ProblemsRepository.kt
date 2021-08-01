@@ -14,7 +14,8 @@ class ProblemsRepository private constructor(context: Context) {
             context.applicationContext,
             DataBaseForProblems::class.java,
             "mydatabasewithproblems")
-            .build()
+        .addMigrations(MigrationForDataBaseWithExecutor())
+        .build()
 
     private var problemDao = dataBaseWithProblems.getDao()
 
