@@ -1,8 +1,10 @@
 package com.example.moscowproblems.FragmentClasses
 
+import android.app.Activity
 import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -32,6 +34,8 @@ private const val STRING_FOR_KEY_FOR_BUNDLE_FOR_TARGET_FRAGMENT_MINUTE = "key fo
 private const val TAG_FOR_TIME_DEBUG = "TimeDebug"
 
 private const val DATE_FORMAT = "EEE, MMM, dd"
+
+private const val REQUEST_CODE_FOR_ACTIVITY_FOR_RESULT_CONTACTS = 1
 
 class ProblemFragment: Fragment(){
 
@@ -126,8 +130,39 @@ class ProblemFragment: Fragment(){
         buttonWithDataVar.text = problemData.date.toString()
         checkBoxSolveProblemVar.isChecked = problemData.isSolved
         checkBoxSolveProblemVar.jumpDrawablesToCurrentState()
+        if (problemData.executor.isNotBlank()) buttonChooseExecutorVar.text = problemData.executor
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode != Activity.RESULT_OK) return
+
+        if (requestCode == REQUEST_CODE_FOR_ACTIVITY_FOR_RESULT_CONTACTS && data != null){
+            val contactUri = data.data
+
+            val queryFields = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
+
+            if (contactUri != null){
+                val cursor = requireActivity().contentResolver.query(contactUri, queryFields, null, null, null)
+                if (cursor != null){
+                    if (cursor.count == 0) return
+
+                    cursor.moveToFirst()
+                    val stringExecutor = cursor.getString(0)
+                    updateProblemModelAfterGetContact(stringExecutor)
+
+                    cursor.close()
+                }
+                cursor?.close()
+            }
+
+        }
+    }
+
+    fun updateProblemModelAfterGetContact(stringNameExecutor: String){
+        problemData.executor = stringNameExecutor
+        viewModelForProblemFragment.saveProblem(problemData)
+        buttonChooseExecutorVar.text = stringNameExecutor
+    }
 
     override fun onStart() {
         super.onStart()
@@ -137,7 +172,16 @@ class ProblemFragment: Fragment(){
         workWithDateButton()
         setListenerOnPickTimeButton()
         setListenerOnSendReportButton()
+        setListenerOnChooseExecutorButton()
 
+    }
+
+    fun setListenerOnChooseExecutorButton(){
+        val chooseExecutorIntent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
+
+        buttonChooseExecutorVar.setOnClickListener{
+            startActivityForResult(chooseExecutorIntent, REQUEST_CODE_FOR_ACTIVITY_FOR_RESULT_CONTACTS)
+        }
     }
 
     fun setListenerOnSendReportButton(){
@@ -152,7 +196,6 @@ class ProblemFragment: Fragment(){
 
                 startActivity(intentWithChooseList)
             }
-
         })
     }
 
