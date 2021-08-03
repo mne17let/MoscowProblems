@@ -3,6 +3,8 @@ package com.example.moscowproblems.FragmentClasses
 import android.app.Activity
 import android.app.Notification
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.text.Editable
@@ -179,9 +181,20 @@ class ProblemFragment: Fragment(){
     fun setListenerOnChooseExecutorButton(){
         val chooseExecutorIntent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
 
+        //setCheckingForRequireActivityForIntent(chooseExecutorIntent)
+
         buttonChooseExecutorVar.setOnClickListener{
             startActivityForResult(chooseExecutorIntent, REQUEST_CODE_FOR_ACTIVITY_FOR_RESULT_CONTACTS)
         }
+    }
+
+    fun setCheckingForRequireActivityForIntent(intentForChooseContact: Intent){
+        val packageManager = requireActivity().packageManager
+
+        intentForChooseContact.addCategory(Intent.CATEGORY_HOME)
+        val resolveActivity: ResolveInfo? = packageManager.resolveActivity(intentForChooseContact, PackageManager.MATCH_DEFAULT_ONLY)
+
+        if (resolveActivity == null) buttonChooseExecutorVar.isEnabled = false
     }
 
     fun setListenerOnSendReportButton(){
