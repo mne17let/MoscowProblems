@@ -10,5 +10,8 @@ data class ProblemModel(@PrimaryKey val id: UUID = UUID.randomUUID(),
                         var date: Date = Date(),
                         var isSolved: Boolean = false,
                         var executor: String = ""
-)
+){
+    val photo_file_name
+    get() = "problem_photo_id_$id.jpg"
+}
 

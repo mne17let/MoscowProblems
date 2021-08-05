@@ -4,11 +4,14 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.example.moscowproblems.Models.ProblemModel
+import java.io.File
 import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Executors
 
 class ProblemsRepository private constructor(context: Context) {
+
+    private var filesDirectory: File = context.applicationContext.filesDir
 
     private var dataBaseWithProblems: DataBaseForProblems = Room.databaseBuilder(
             context.applicationContext,
@@ -49,6 +52,10 @@ class ProblemsRepository private constructor(context: Context) {
         executorObject.execute{
             problemDao.updateProblem(updateProblemModel)
         }
+    }
+
+    fun getPhotoFile(problemData: ProblemModel): File{
+        return File(filesDirectory, problemData.photo_file_name)
     }
 
 }

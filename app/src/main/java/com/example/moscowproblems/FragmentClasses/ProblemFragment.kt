@@ -5,16 +5,16 @@ import android.app.Notification
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.EditText
+import android.widget.*
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.Observer
@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.moscowproblems.Models.ProblemModel
 import com.example.moscowproblems.R
 import com.example.moscowproblems.ViewModels.ProblemFragmentViewModel
+import java.io.File
 import java.util.*
 
 private const val STRING_TAG_FOR_DATE_DIALOG = "Date dialog"
@@ -38,6 +39,7 @@ private const val TAG_FOR_TIME_DEBUG = "TimeDebug"
 private const val DATE_FORMAT = "EEE, MMM, dd"
 
 private const val REQUEST_CODE_FOR_ACTIVITY_FOR_RESULT_CONTACTS = 1
+private const val REQUEST_CODE_FOR_ACTIVITY_FOR_RESULT_CAMERA = 2
 
 class ProblemFragment: Fragment(){
 
@@ -49,6 +51,12 @@ class ProblemFragment: Fragment(){
     private lateinit var buttonPickTimeVar: Button
     private lateinit var buttonChooseExecutorVar: Button
     private lateinit var buttonSendReportVar: Button
+
+    private lateinit var imageViewForPhotoVar: ImageView
+    private lateinit var buttonForTakingPhotoVar: ImageButton
+
+    private lateinit var problemPhotoFile: File
+    private lateinit var uriForPhotoFile: Uri
 
     private lateinit var problemId: UUID
 
@@ -102,6 +110,8 @@ class ProblemFragment: Fragment(){
         buttonPickTimeVar = viewOfFragment.findViewById(R.id.id_button_pick_time)
         buttonChooseExecutorVar = viewOfFragment.findViewById(R.id.id_button_choose_executor)
         buttonSendReportVar = viewOfFragment.findViewById(R.id.id_button_send_report)
+        imageViewForPhotoVar = viewOfFragment.findViewById(R.id.id_imageview_problem_photo)
+        buttonForTakingPhotoVar = viewOfFragment.findViewById(R.id.id_button_take_a_picture)
 
 
         return viewOfFragment
@@ -122,6 +132,7 @@ class ProblemFragment: Fragment(){
         override fun onChanged(t: ProblemModel?) {
             if (t != null) {
                 problemData = t
+                setPhotoInTheImageView(problemData)
                 updateUI()
             }
         }
@@ -175,7 +186,38 @@ class ProblemFragment: Fragment(){
         setListenerOnPickTimeButton()
         setListenerOnSendReportButton()
         setListenerOnChooseExecutorButton()
+        setListenerOnCameraButton()
 
+    }
+
+    fun setListenerOnCameraButton(){
+        val newIntentForCamera = createIntentForCamera()
+        buttonForTakingPhotoVar.isEnabled = isThereNecessaryActivityForCamera(newIntentForCamera)
+
+        buttonForTakingPhotoVar.setOnClickListener{
+            newIntentForCamera.putExtra(MediaStore.EXTRA_OUTPUT, uriForPhotoFile)
+
+            val listOfResolveCameraActivities = requireActivity().packageManager.queryIntentActivities(newIntentForCamera,
+                PackageManager.MATCH_DEFAULT_ONLY)
+
+            for (activity in listOfResolveCameraActivities){
+                requireActivity().grantUriPermission(activity.activityInfo.packageName, uriForPhotoFile,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            }
+            startActivityForResult(newIntentForCamera, REQUEST_CODE_FOR_ACTIVITY_FOR_RESULT_CAMERA)
+        }
+    }
+
+    fun isThereNecessaryActivityForCamera(intentForTakigPhoto: Intent): Boolean{
+        val packageManager: PackageManager = requireActivity().packageManager
+
+        val resolveActivity: ResolveInfo? = packageManager.resolveActivity(intentForTakigPhoto, PackageManager.MATCH_DEFAULT_ONLY)
+
+        return if (resolveActivity == null) false else true
+    }
+
+    fun createIntentForCamera(): Intent{
+        return Intent(MediaStore.ACTION_IMAGE_CAPTURE)
     }
 
     fun setListenerOnChooseExecutorButton(){
@@ -289,5 +331,15 @@ class ProblemFragment: Fragment(){
         val report = getString(R.string.string_full_report, problemData.title, dateString, isSolvedProblem, forExecutor)
 
         return report
+    }
+
+    fun setPhotoInTheImageView(problemData: ProblemModel){
+        problemPhotoFile = viewModelForProblemFragment.getPhotoFile(problemData)
+        getUriForFile(problemPhotoFile)
+    }
+
+    fun getUriForFile(file: File){
+        val authority = "com.example.moscowproblems.fileprovider"
+        uriForPhotoFile = FileProvider.getUriForFile(requireActivity(), authority, file)
     }
 }

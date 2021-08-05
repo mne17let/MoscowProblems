@@ -7,6 +7,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.moscowproblems.DatabaseClasses.ProblemsRepository
 import com.example.moscowproblems.Models.ProblemModel
+import java.io.File
 import java.util.*
 
 class ProblemFragmentViewModel: ViewModel() {
@@ -29,6 +30,10 @@ class ProblemFragmentViewModel: ViewModel() {
 
     fun saveProblem(problemModel: ProblemModel){
         problemsRepository.updateProblemInBase(problemModel)
+    }
+
+    fun getPhotoFile(problemData: ProblemModel): File {
+        return problemsRepository.getPhotoFile(problemData)
     }
 
 }
