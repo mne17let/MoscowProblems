@@ -12,5 +12,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:dialogTheme">@style/Test</item>
+
+    </style>
+
+    <style name="Test" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:background">#000000</item>
     </style>
 </resources>
