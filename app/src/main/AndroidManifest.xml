@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.moscowproblems">
 
+    <uses-feature android:name="android.hardware.camera2"
+        android:required="false"/>
+
     <application
         android:name=".DatabaseClasses.MoscowProblemsApplication"
         android:allowBackup="true"

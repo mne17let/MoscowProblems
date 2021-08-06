@@ -21,6 +21,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.moscowproblems.Models.ProblemModel
 import com.example.moscowproblems.R
+import com.example.moscowproblems.Utils.getScaledBitMapWithSizeForActivity
 import com.example.moscowproblems.ViewModels.ProblemFragmentViewModel
 import java.io.File
 import java.util.*
@@ -40,6 +41,8 @@ private const val DATE_FORMAT = "EEE, MMM, dd"
 
 private const val REQUEST_CODE_FOR_ACTIVITY_FOR_RESULT_CONTACTS = 1
 private const val REQUEST_CODE_FOR_ACTIVITY_FOR_RESULT_CAMERA = 2
+
+private const val STRING_URI_FOR_SHOW_PHOTO_FRAGMENT = "URI FOR FRAGMENT"
 
 class ProblemFragment: Fragment(){
 
@@ -99,7 +102,6 @@ class ProblemFragment: Fragment(){
         })
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val viewOfFragment = inflater.inflate(R.layout.fragment_problem, container, false)
@@ -144,6 +146,21 @@ class ProblemFragment: Fragment(){
         checkBoxSolveProblemVar.isChecked = problemData.isSolved
         checkBoxSolveProblemVar.jumpDrawablesToCurrentState()
         if (problemData.executor.isNotBlank()) buttonChooseExecutorVar.text = problemData.executor
+        updatePhotoInImageView()
+    }
+
+    fun updatePhotoInImageView(){
+        if (problemPhotoFile.exists()){
+            val bitmapFileForImageView = getScaledBitMapWithSizeForActivity(problemPhotoFile.path, requireActivity())
+            imageViewForPhotoVar.setImageBitmap(bitmapFileForImageView)
+            imageViewForPhotoVar.setOnClickListener{
+                val newShowPhotoDialogFragment = ShowPhotoDialogFragment()
+                val bundleArguments = Bundle()
+                bundleArguments.putSerializable(STRING_URI_FOR_SHOW_PHOTO_FRAGMENT, uriForPhotoFile.toString())
+                newShowPhotoDialogFragment.arguments = bundleArguments
+                newShowPhotoDialogFragment.show(childFragmentManager, "Открываю фрагмент с фото")
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -168,6 +185,11 @@ class ProblemFragment: Fragment(){
                 cursor?.close()
             }
 
+        }
+
+        if (requestCode == REQUEST_CODE_FOR_ACTIVITY_FOR_RESULT_CAMERA){
+            requireActivity().revokeUriPermission(uriForPhotoFile, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            updatePhotoInImageView()
         }
     }
 
@@ -341,5 +363,10 @@ class ProblemFragment: Fragment(){
     fun getUriForFile(file: File){
         val authority = "com.example.moscowproblems.fileprovider"
         uriForPhotoFile = FileProvider.getUriForFile(requireActivity(), authority, file)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        requireActivity().revokeUriPermission(uriForPhotoFile, Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
     }
 }
