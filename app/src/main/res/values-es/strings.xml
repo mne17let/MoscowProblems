@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Problemas de Moscú</string>
+
+    <string name="string_title_hint">Escriba el nombre del problema</string>
+    <string name="string_title_text">Nombre</string>
+    <string name="string_details_text">Extremos</string>
+    <string name="string_solved_text">Resuelto</string>
+
+
+    <string name="string_new_problem_text">Nuevo problema</string>
+    <string name="string_when_empty_list_with_problems">¡No hay problema! Genial! Pero si aparecen, agréguelos a la lista</string>
+    <string name="string_button_when_empty_list_with_problems">Añadir un nuevo problema</string>
+
+    <string name="string_button_choose_executor">Seleccionar artista</string>
+    <string name="string_button_send_report">Enviar informe</string>
+
+    <string name="string_full_report">%1$s!
+      Este problema se ha registrado %2$s. %3$s e %4$s    </string>
+
+    <string name="string_problem_report_solved">Problema resuelto</string>
+    <string name="string_problem_report_unsolved">Problema no resuelto</string>
+    <string name="string_problem_report_no_executor">el ejecutor no ha sido nombrado.</string>
+    <string name="string_problem_report_have_executor">ejecutante - %s.</string>
+    <string name="string_problem_report_app_name">Nombre de la aplicación y el informe</string>
+    <string name="string_send_report_for">Enviar informe con</string>
+
+</resources>

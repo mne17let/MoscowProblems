@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MoscowProblems</string>
+    <string name="app_name">Проблемы Москвы</string>
 
     <string name="string_title_hint">Введите название проблемы</string>
     <string name="string_title_text">Название</string>
@@ -21,7 +21,7 @@
     <string name="string_problem_report_unsolved">Проблема не решена</string>
     <string name="string_problem_report_no_executor">исполнитель не назначен.</string>
     <string name="string_problem_report_have_executor">исполнитель - %s.</string>
-    <string name="string_problem_report_app_name">Название приложение и отчёт</string>
+    <string name="string_problem_report_app_name">Название приложения и отчёт</string>
     <string name="string_send_report_for">Отправить отчёт с помощью</string>
 
 

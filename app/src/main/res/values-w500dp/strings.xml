@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="string_title_hint">Очень длинная подсказка при длине 500 пикселей и больше</string>
+
+</resources>
